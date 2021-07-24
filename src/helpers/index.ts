@@ -5,11 +5,14 @@ export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
 };
 
-export const requestSectionValues = async () => {
+export const requestSectionValues = async (forPage?: boolean) => {
   const { window } = vscode;
-  const sectionName = await window.showInputBox({
-    placeHolder: 'Section name',
-  }) ?? 'Section';
+  const placeHolder = `Section name ${forPage ? '/ [done] to stop adding sections' : ''}`;
+  const sectionName = await window.showInputBox({ placeHolder }) ?? 'Section';
+
+  if (forPage && sectionName === 'done') {
+    return;
+  }
 
   const items: vscode.QuickPickItem[] = Object.values(SectionType).map(val => ({ label: val, description: val }));
   const selection = await window.showQuickPick(items);
@@ -22,8 +25,8 @@ export const requestSectionValues = async () => {
   const count = needsCount ? await window.showInputBox({
     placeHolder: 'Section count',
   }) ?? 3 : 0;
-  
-  
+
+
   return {
     sectionName, sectionType, count: count as number
   };
@@ -45,8 +48,10 @@ export const generateSectionFromData = (title: string, type: SectionType, count:
 
   // Replace PlaceholderValue.COUNT with count
   if (section.data.hasCount) {
-    template = template.replace(PlaceholderValue.COUNT, count.toString());
+    template = template.replace(new RegExp(PlaceholderValue.COUNT, 'g'), count.toString());
   }
+
+  console.log('generated', template);
 
   // - Replace placeholders with real values - 
   section.data.template = template;

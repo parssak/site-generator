@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:site-generator.generateSection"
+        "onCommand:site-generator.generateSection",
+				"onCommand:site-generator.generatePage"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -19,6 +20,11 @@
 				"command": "site-generator.generateSection",
 				"category": "Site Generator",
 				"title": "Add Section"
+			},
+			{
+				"command": "site-generator.generatePage",
+				"category": "Site Generator",
+				"title": "Generate Page"
 			}
 		]
 	},

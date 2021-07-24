@@ -1,5 +1,5 @@
 import { requestSectionValues } from './../helpers/index';
-import { generateSectionFromData, getSectionData } from '../helpers/index';
+import { generateSectionFromData } from '../helpers/index';
 import * as vscode from 'vscode';
 import { buildSection } from '../helpers/builders';
 
