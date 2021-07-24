@@ -4,6 +4,7 @@ export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
 };
 
+/** Creates Section object from SectionData */
 export const generateSection = (title: string, type: SectionType, count: number): Section => {
   const section: Section = {
     title,
@@ -27,3 +28,4 @@ export const generateSection = (title: string, type: SectionType, count: number)
 
   return section;
 };
+

@@ -32,6 +32,11 @@ export interface Section {
   data: SectionData;
 }
 
+export interface Page {
+  title: string;
+  sections: Section[];
+}
+
 export const sectionDatas: SectionData[] = [
   {
     type: SectionType.Regular,
@@ -55,7 +60,7 @@ export const sectionDatas: SectionData[] = [
   },
   {
     type: SectionType.Columns,
-    template: `${ComponentType.Container}>(h2{${PlaceholderValue.TITLE}}+${ComponentType.Grid}[type='column' count=${PlaceholderValue.COUNT}]>((div>{Column $})*${PlaceholderValue.COUNT}))`,
+    template: `${ComponentType.Container}>h2{${PlaceholderValue.TITLE}}+${ComponentType.Grid}[type='column' count=${PlaceholderValue.COUNT}]>div>{Column $}*${PlaceholderValue.COUNT}`,
     components: [ComponentType.Container, ComponentType.Grid],
     hasCount: true,
   },

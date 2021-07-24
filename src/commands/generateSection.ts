@@ -1,8 +1,9 @@
-import { generateSection, getSectionData } from './../helpers/index';
+import { generateSection, getSectionData } from '../helpers/index';
 import * as vscode from 'vscode';
 import {
   SectionType
 } from '../types';
+import { buildSection } from '../helpers/builders';
 export default async () => {
   const { window } = vscode;
   const editor = window.activeTextEditor;
@@ -27,11 +28,6 @@ export default async () => {
   const section = generateSection(sectionName, selection.label as SectionType, count as number);
 
   if (editor) {
-    const { selection } = editor;
-    editor.edit(editBuilder => {
-      editBuilder.insert(selection.active, `<!-- ${sectionName} -->\n`);
-      editBuilder.insert(selection.active, section.data.template);
-      vscode.commands.executeCommand('editor.emmet.action.expandAbbreviation');
-    });
+    buildSection(editor, section);
   }
 };

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import addSection from './commands/addSection';
+import generateSection from './commands/generateSection';
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.commands.registerCommand('site-generator.addSection', addSection)
+		vscode.commands.registerCommand('site-generator.generateSection', generateSection)
 	);
 }
 
