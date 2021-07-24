@@ -1,11 +1,36 @@
-import {  PlaceholderValue, Section, SectionData, SectionType, sectionDatas } from "../types";
+import { PlaceholderValue, Section, SectionData, SectionType, sectionDatas } from "../types";
+import * as vscode from 'vscode';
 
 export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
 };
 
+export const requestSectionValues = async () => {
+  const { window } = vscode;
+  const sectionName = await window.showInputBox({
+    placeHolder: 'Section name',
+  }) ?? 'Section';
+
+  const items: vscode.QuickPickItem[] = Object.values(SectionType).map(val => ({ label: val, description: val }));
+  const selection = await window.showQuickPick(items);
+  if (!selection) {
+    return;
+  }
+  const sectionType: SectionType = selection.label as SectionType;
+
+  const needsCount = getSectionData(sectionType).hasCount;
+  const count = needsCount ? await window.showInputBox({
+    placeHolder: 'Section count',
+  }) ?? 3 : 0;
+  
+  
+  return {
+    sectionName, sectionType, count: count as number
+  };
+};
+
 /** Creates Section object from SectionData */
-export const generateSection = (title: string, type: SectionType, count: number): Section => {
+export const generateSectionFromData = (title: string, type: SectionType, count: number): Section => {
   const section: Section = {
     title,
     type,
@@ -16,7 +41,7 @@ export const generateSection = (title: string, type: SectionType, count: number)
   let { template } = section.data;
 
   // Replace PlaceholderValue.TITLE with title
-    template = template.replace(PlaceholderValue.TITLE, title);
+  template = template.replace(PlaceholderValue.TITLE, title);
 
   // Replace PlaceholderValue.COUNT with count
   if (section.data.hasCount) {
@@ -28,4 +53,3 @@ export const generateSection = (title: string, type: SectionType, count: number)
 
   return section;
 };
-

@@ -1,33 +1,22 @@
-import { generateSection, getSectionData } from '../helpers/index';
+import { requestSectionValues } from './../helpers/index';
+import { generateSectionFromData, getSectionData } from '../helpers/index';
 import * as vscode from 'vscode';
-import {
-  SectionType
-} from '../types';
 import { buildSection } from '../helpers/builders';
+
 export default async () => {
+
   const { window } = vscode;
+
   const editor = window.activeTextEditor;
 
-  // https://github.com/microsoft/vscode-extension-samples/blob/main/quickinput-sample/src/basicInput.ts
-  const sectionName = await window.showInputBox({
-    placeHolder: 'Section name',
-  }) ?? 'Section';
+  const sectionValues = await requestSectionValues();
 
-  const items: vscode.QuickPickItem[] = Object.values(SectionType).map(val => ({ label: val, description: val }));
-  const selection = await window.showQuickPick(items);
-  if (!selection) {
-    return;
-  }
-  
-  const needsCount = getSectionData(selection.label as SectionType).hasCount;
-  const count = needsCount ? await window.showInputBox({
-    placeHolder: 'Section count',
-  }) ?? 3 : 0;
+  if (!sectionValues) { return; }
 
-  // generate the section
-  const section = generateSection(sectionName, selection.label as SectionType, count as number);
+  const { sectionName, sectionType, count } = sectionValues;
 
-  if (editor) {
-    buildSection(editor, section);
-  }
+  const section = generateSectionFromData(sectionName, sectionType, count);
+
+  if (editor) { buildSection(editor, section); }
+
 };
