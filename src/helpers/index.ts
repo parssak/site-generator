@@ -7,8 +7,8 @@ export const getSectionData = (sectionType: SectionType): SectionData => {
 
 export const requestSectionValues = async (forPage?: boolean) => {
   const { window } = vscode;
-  const placeHolder = `Section name ${forPage ? '/ [done] to stop adding sections' : ''}`;
-  const sectionName = await window.showInputBox({ placeHolder }) ?? 'Section';
+  // const placeHolder = `Section name ${forPage ? '/ [done] to stop adding sections' : ''}`;
+  const sectionName = await window.showInputBox({ placeHolder: 'Section name' }) ?? 'Section';
 
   if (forPage && sectionName === 'done') {
     return;
