@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import generateSection from './commands/generateSection';
 import generatePage from './commands/generatePage';
+import generateProject from './commands/generateProject';
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -9,6 +10,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('site-generator.generatePage', generatePage)
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('site-generator.generateProject', generateProject)
 	);
 }
 

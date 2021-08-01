@@ -9,8 +9,12 @@ export default async () => {
 
   const editor = window.activeTextEditor;
 
-  if (!editor) {return;}
-  const pageTitle = `${editor.document.fileName}`;
+  if (!editor) { return; }
+  const titlePaths = editor.document.fileName.split('/');
+  let title = titlePaths[titlePaths.length - 1];
+  // Remove trailing file extension
+  title = title.replace(/\.[^/.]+$/, '');
+  const pageTitle = `${title}`;
   buildHeader(editor, pageTitle);
 
   while (true) {

@@ -11,7 +11,8 @@
 	],
 	"activationEvents": [
         "onCommand:site-generator.generateSection",
-				"onCommand:site-generator.generatePage"
+				"onCommand:site-generator.generatePage",
+				"onCommand:site-generator.generateProject"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -25,6 +26,11 @@
 				"command": "site-generator.generatePage",
 				"category": "Site Generator",
 				"title": "Generate Page"
+			},
+			{
+				"command": "site-generator.generateProject",
+				"category": "Site Generator",
+				"title": "Generate Project"
 			}
 		]
 	},

@@ -4,6 +4,7 @@ export enum SectionType {
   SplitRight = 'Split Right',
   Columns = 'Columns',
   Cards = 'Cards',
+  ImageCards = 'Image Cards',
   Banner = 'Banner',
 }
 
@@ -12,6 +13,7 @@ export enum ComponentType {
   Container = 'Container',
   Grid = 'Grid',
   Card = 'Card',
+  ImageCard = 'ImageCard',
   Image = 'Image'
 }
 
@@ -36,6 +38,10 @@ export interface Section {
 export interface Page {
   title: string;
   sections: Section[];
+}
+
+export interface ProjectConfig {
+  pages: Page[];
 }
 
 export const sectionDatas: SectionData[] = [
@@ -67,8 +73,14 @@ export const sectionDatas: SectionData[] = [
   },
   {
     type: SectionType.Cards,
-    template: `${ComponentType.Container}>h2{${PlaceholderValue.TITLE}}+${ComponentType.Grid}[type='column' count=${PlaceholderValue.COUNT}]>${ComponentType.Card}>{Card $}*${PlaceholderValue.COUNT}^^^{}`,
+    template: `${ComponentType.Container}>(h2{${PlaceholderValue.TITLE}}+${ComponentType.Grid}[type='column' count=${PlaceholderValue.COUNT}]>((${ComponentType.Card}>{Column $})*${PlaceholderValue.COUNT}))^{}`,
     components: [ComponentType.Container, ComponentType.Grid, ComponentType.Card],
+    hasCount: true,
+  },
+  {
+    type: SectionType.ImageCards,
+    template: `${ComponentType.Container}>(h2{${PlaceholderValue.TITLE}}+${ComponentType.Grid}[type='column' count=${PlaceholderValue.COUNT}]>((${ComponentType.ImageCard}>{Column $})*${PlaceholderValue.COUNT}))^{}`,
+    components: [ComponentType.Container, ComponentType.Grid, ComponentType.ImageCard],
     hasCount: true,
   },
 ];
