@@ -4,11 +4,8 @@ import * as vscode from 'vscode';
 import { buildHeader, buildSection } from '../helpers/builders';
 
 export default async () => {
-  
   const { window } = vscode;
-
   const editor = window.activeTextEditor;
-
   if (!editor) { return; }
   const titlePaths = editor.document.fileName.split('/');
   let title = titlePaths[titlePaths.length - 1];

@@ -58,3 +58,50 @@ export const generateSectionFromData = (title: string, type: SectionType, count:
 
   return section;
 };
+
+export const BASE_FILE_CONTENT =
+  `
+<template>
+  <Header>
+    <h1>This file was generated!</h1>
+  </Header>
+  <Container>
+    <h2>Content</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Curabitur eget nisl auctor, rhoncus nisl ut, aliquam erat.
+    </p>
+  </Container>
+</template>
+
+<script>
+import { Container, Header } from '@/components/Container';
+
+export default {
+  components: {
+    Container,
+    Header
+  }
+};
+
+</script>
+`;
+
+export const generateRouterFileContent = (paths: string[]): string => {
+  const routes = paths.map(path => `{path: "/${path === 'home' ? '' : path}", component: () => import("@/views/${path}")}`);
+
+  const routerFileContent = `
+    import { createRouter, createWebHistory } from "vue-router";
+
+    const routes = [${routes}];
+
+    const router = createRouter({
+      history: createWebHistory(process.env.BASE_URL),
+      routes,
+    });
+    
+    export default router;
+    `;
+
+  return routerFileContent;
+};
