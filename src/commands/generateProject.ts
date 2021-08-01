@@ -8,22 +8,30 @@ export default async () => {
   console.log("Ran generate project!");
   const fc = new FileController();
 
-  const config: ProjectConfig = {
-    pages: [
-      {
-        title: "Home",
-        sections: []
-      },
-      {
-        title: "About",
-        sections: []
-      }
+  // Generate config for project
+  const projectConfig = [
+    'home',
+    'about',
+    'about/team',
+    'services',
+    'contact'
+  ];
 
-    ],
-  };
+  // const config: ProjectConfig = {
+  //   pages: [
+  //     {
+  //       title: "Home",
+  //       sections: []
+  //     },
+  //     {
+  //       title: "About",
+  //       sections: []
+  //     }
+  //   ],
+  // };
 
 
-  fc.setupProject(config);
+  fc.setupProject(projectConfig);
 
 
   // const editor = window.activeTextEditor;

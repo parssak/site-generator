@@ -41,19 +41,31 @@ export default class FileController {
     }
   }
 
-  private async createPageFiles(pages: Page[]) {
+  private async createPageFiles(paths: string[]) {
     if (!this.pagesDirectoryURI) { return; }
-    for (const page of pages) {
-      const fileURI = this.pagesDirectoryURI.with({ path: posix.join(this.pagesDirectoryURI.path, page.title + '.vue') });
-      const fileData = Buffer.from(page.title, 'utf8');
+    for (const path of paths) {
+      const baseFolder = path.toLowerCase();
+      // Get string from last character to first '/'
+      // let fileName = baseFolder.substr(baseFolder.lastIndexOf('/') + 1);
+      // Capitalize first letter
+      // fileName = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+      // Add .vue to file name
+      // fileName = `${fileName}.vue`;
+      // fileName = `${fileName}.vue`;
+      const fileName = 'index.vue';
+      const actualPath = `${baseFolder}/${fileName}`;
+      const pathName = posix.join(this.pagesDirectoryURI.path, actualPath);
+      console.log(`base folder ${baseFolder} , file name ${fileName} , actualPath ${actualPath} , final path ${pathName}`);
+      const fileURI = this.pagesDirectoryURI.with({ path: pathName});
+      const fileData = Buffer.from('This is a file', 'utf8');
       await this.fs.writeFile(fileURI, fileData);
     }
   }
 
-  public async setupProject(config: ProjectConfig) {
+  public async setupProject(paths: string[]) {
     if (this.rootWorkspace) {
       await this.parseWorkspace(this.rootWorkspace);
-      await this.createPageFiles(config.pages);
+      await this.createPageFiles(paths);
     }
   }
 }
