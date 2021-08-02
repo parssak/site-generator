@@ -47,7 +47,7 @@ export const CONTAINER_CONTENT = `
 <template>
   <section
     :class="additionalClasses"
-    class="py-4 md:py-8 xl:pb-16 px-4 sm:px-6 lg:px-8"
+    class="py-4 md:py-8 px-4 sm:px-6 lg:px-8"
   >
     <div class="max-w-full lg:max-w-7xl lg:mx-auto">
       <div class="relative md:p-6 w-full">
@@ -413,7 +413,7 @@ export default {
   },
 };
 </script>
-`
+`;
 
 export const FOOTER_CONTENT = `
 <template>

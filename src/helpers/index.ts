@@ -8,13 +8,7 @@ export const getSectionData = (sectionType: SectionType): SectionData => {
 
 export const requestSectionValues = async (forPage?: boolean) => {
   const { window } = vscode;
-  // const placeHolder = `Section name ${forPage ? '/ [done] to stop adding sections' : ''}`;
   const sectionName = await window.showInputBox({ placeHolder: 'Section name' }) ?? 'Section';
-
-  if (forPage && sectionName === 'done') {
-    return;
-  }
-
   const items: vscode.QuickPickItem[] = Object.values(SectionType).map(val => ({ label: val, description: val }));
   const selection = await window.showQuickPick(items);
   if (!selection) {
@@ -51,8 +45,6 @@ export const generateSectionFromData = (title: string, type: SectionType, count:
   if (section.data.hasCount) {
     template = template.replace(new RegExp(PlaceholderValue.COUNT, 'g'), count.toString());
   }
-
-  console.log('generated', template);
 
   // - Replace placeholders with real values - 
   section.data.template = template;

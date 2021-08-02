@@ -9,7 +9,6 @@ export const buildSection = (editor: TextEditor, section: Section) => {
     builder.insert(selection.active, `\n<!-- ${section.title} -->\n`);
     builder.insert(selection.active, section.data.template);
     vscode.commands.executeCommand('editor.emmet.action.expandAbbreviation');
-    
   });
 };
 

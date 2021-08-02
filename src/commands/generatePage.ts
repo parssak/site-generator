@@ -2,6 +2,7 @@ import { requestSectionValues } from './../helpers/index';
 import { generateSectionFromData } from '../helpers/index';
 import * as vscode from 'vscode';
 import { buildHeader, buildSection } from '../helpers/builders';
+import SectionController from '../helpers/SectionController';
 
 export default async () => {
   const { window } = vscode;
@@ -18,7 +19,6 @@ export default async () => {
     const sectionValues = await requestSectionValues();
     if (!sectionValues) { break; }
     const { sectionName, sectionType, count } = sectionValues;
-    const section = generateSectionFromData(sectionName, sectionType, count);
-    if (editor) { buildSection(editor, section); }
+    SectionController.createSection(sectionName, sectionType, count);
   }
 };
