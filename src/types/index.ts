@@ -19,7 +19,8 @@ export enum ComponentType {
 
 export enum PlaceholderValue {
   TITLE = 'TITLE_TEXT',
-  COUNT = 'COUNT'
+  COUNT = 'COUNT',
+  NAV_ROUTES = 'NAV_ROUTES',
 }
 
 export interface SectionData {

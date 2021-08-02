@@ -1,6 +1,9 @@
+import { generateNavContent } from './index';
+import { CONTAINER_CONTENT, HEADER_CONTENT, BASE_FILE_CONTENT, NAV_CONTENT, FOOTER_CONTENT, APP_FILE_CONTENT, NAVITEM_CONTENT } from './file-contents';
 import { FileSystem, FileType, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { posix } from 'path';
-import { BASE_FILE_CONTENT, generateRouterFileContent } from '.';
+import { generateRouterFileContent } from '.';
+import { PlaceholderValue } from '../types';
 
 export default class ProjectController {
   private rootWorkspace: WorkspaceFolder | undefined;
@@ -9,6 +12,15 @@ export default class ProjectController {
 
   constructor() {
     this.setRootWorkspace();
+  }
+
+  public async setupProject(paths: string[]) {
+    if (!this.rootWorkspace) { return; }
+    await this.parseWorkspace(this.rootWorkspace);
+    await this.addBaseComponentFiles(paths);
+    await this.addAppFile();
+    await this.createViewFiles(paths);
+    await this.createRouterFile(paths);
   }
 
   private setRootWorkspace() {
@@ -32,33 +44,31 @@ export default class ProjectController {
   private async createViewFiles(paths: string[]) {
     if (!this.srcDirectoryURI) { return; }
     for (const path of paths) {
-      await this.addFile('views', `${path.toLowerCase()}/index`, BASE_FILE_CONTENT);
+      await this.addFile('views', `${path.toLowerCase()}/index`, BASE_FILE_CONTENT.replace(PlaceholderValue.TITLE, path.substr(path.lastIndexOf('/') + 1)));
     }
   }
 
   private async createRouterFile(paths: string[]) {
-    if (!this.srcDirectoryURI) { return; }
-    await this.addFile('router', 'index', generateRouterFileContent(paths));
+    await this.addFile('router', 'index', generateRouterFileContent(paths), 'js');
   }
 
-  public async setupProject(paths: string[]) {
-    if (this.rootWorkspace) {
-      await this.parseWorkspace(this.rootWorkspace);
-      await this.createViewFiles(paths);
-      await this.createRouterFile(paths);
-    }
+  private async addBaseComponentFiles(paths: string[]) {
+    // await this.addFile('components', 'Container', CONTAINER_CONTENT);
+    // await this.addFile('components', 'Header', HEADER_CONTENT);
+    await this.addFile('components', 'Nav', generateNavContent(paths));
+    // await this.addFile('components', 'NavItem', NAVITEM_CONTENT);
+    // await this.addFile('components', 'Footer', FOOTER_CONTENT);
   }
 
-  public async addBaseComponentFiles() {
-    if (!this.srcDirectoryURI) { return; }
-  }
+  private async addAppFile() {
+    await this.addFile('', 'App', APP_FILE_CONTENT);
+  };
 
-  private async addFile(folder: string, file: string, content: string) {
+  private async addFile(folder: string, file: string, content: string, fileExtension: string = 'vue') {
     if (!this.srcDirectoryURI) { return; }
-    const localePath = `${folder}/${file}.vue`;
+    const localePath = `${folder}/${file}.${fileExtension}`;
     const path = posix.join(this.srcDirectoryURI.path, localePath);
     const uri = this.srcDirectoryURI.with({ path });
     await this.fs.writeFile(uri, Buffer.from(content, 'utf8'));
-
   }
 }

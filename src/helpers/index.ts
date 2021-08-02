@@ -1,5 +1,6 @@
 import { PlaceholderValue, Section, SectionData, SectionType, sectionDatas } from "../types";
 import * as vscode from 'vscode';
+import { NAV_CONTENT } from "./file-contents";
 
 export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
@@ -59,36 +60,13 @@ export const generateSectionFromData = (title: string, type: SectionType, count:
   return section;
 };
 
-export const BASE_FILE_CONTENT =
-  `
-<template>
-  <Header>
-    <h1>This file was generated!</h1>
-  </Header>
-  <Container>
-    <h2>Content</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Curabitur eget nisl auctor, rhoncus nisl ut, aliquam erat.
-    </p>
-  </Container>
-</template>
-
-<script>
-import { Container, Header } from '@/components/Container';
-
-export default {
-  components: {
-    Container,
-    Header
-  }
-};
-
-</script>
-`;
-
 export const generateRouterFileContent = (paths: string[]): string => {
-  const routes = paths.map(path => `{path: "/${path === 'home' ? '' : path}", component: () => import("@/views/${path}")}`);
+  const routes = paths.map(path =>
+    `
+    {
+      path: "/${path === 'home' ? '' : path}", 
+      component: () => import("@/views/${path}")
+    }`);
 
   const routerFileContent = `
     import { createRouter, createWebHistory } from "vue-router";
@@ -105,3 +83,49 @@ export const generateRouterFileContent = (paths: string[]): string => {
 
   return routerFileContent;
 };
+
+export const generateNavContent = (paths: string[]): string => {
+
+  interface IPath {
+    label: string;
+    path: string;
+    dropdownItems?: IPath[];
+  }
+  const pathObjects: Record<string, IPath> = {};
+  paths.forEach(path => {
+    const lastSlash = path.lastIndexOf('/');
+    const label = path.substr(path.lastIndexOf('/') + 1);
+    let parent = '';
+    if (lastSlash !== -1) {
+      parent = path.substr(0, lastSlash);
+      pathObjects[parent].dropdownItems = [...pathObjects[parent]?.dropdownItems ?? [], { label, path }];
+    } else {
+      pathObjects[label] = {
+        label,
+        path,
+      };
+    }
+  });
+
+  console.log('foo');
+  console.log(pathObjects);
+
+  const navRoutes = Object.values(pathObjects).map(route => {
+    const { label, path, dropdownItems } = route;
+    if (dropdownItems) {
+      return `
+      {
+        path: "/${label === 'home' ? '' : path}",
+        label: "${label}",
+        dropdownItems: [${dropdownItems.map(item => `{ label: "${item.label}", path: "/${item.path}" }`).join(', ')}]
+      }`;
+    }
+    return `
+    {
+      path: "/${label === 'home' ? '' : path}",
+      label: "${label}"
+    }`;
+  });
+  return NAV_CONTENT.replace(PlaceholderValue.NAV_ROUTES, `${navRoutes}`);
+};
+
