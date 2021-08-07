@@ -135,7 +135,7 @@ export const NAV_CONTENT = `
           md:justify-start md:space-x-5
         "
       >
-        <div class="flex justify-start lg:w-0 lg:flex-1">
+        <div class="flex justify-start lg:w-0 flex-1">
           <router-link to="/">
             <span class="sr-only">Company Name</span>
             <div class="flex items-center">
