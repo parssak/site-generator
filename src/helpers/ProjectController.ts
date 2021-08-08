@@ -18,7 +18,7 @@ export default class ProjectController {
     if (!this.rootWorkspace) { return; }
     await this.parseWorkspace(this.rootWorkspace);
     await this.addBaseComponentFiles(paths);
-    // await this.addAppFile();
+    await this.addAppFile();
     await this.createViewFiles(paths);
     await this.createRouterFile(paths);
   }
