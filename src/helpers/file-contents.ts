@@ -90,30 +90,37 @@ export const HEADER_CONTENT = `
         aria-hidden="true"
       />
     </div>
-    <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32">
-      <h1
-        class="
-          text-4xl
-          font-extrabold
-          tracking-tight
-          text-white
-          sm:text-5xl
-          capitalize
-          lg:text-6xl
-        "
-      >
-        {{ title }}
-      </h1>
-      <p v-if="description" class="mt-6 text-xl text-indigo-100 max-w-3xl">
-        {{ description }}
-      </p>
-    </div>
+    <Container>
+      <div class="py-16">
+        <h1
+          class="
+            text-4xl
+            font-extrabold
+            tracking-tight
+            capitalize
+            text-white
+            sm:text-5xl
+            lg:text-6xl
+          "
+        >
+          {{ title }}
+        </h1>
+        <p v-if="description" class="mt-6 text-xl text-indigo-100 max-w-3xl">
+          {{ description }}
+        </p>
+      </div>
+    </Container>
+    <!-- <div class="relative max-w-7xl mx-auto py-24 sm:py-32">
+
+    </div> -->
   </div>
 </template>
 
 <script>
+import Container from "@/components/Container.vue";
 export default {
   name: "Header",
+  components: { Container },
   props: {
     title: String,
     description: String,
