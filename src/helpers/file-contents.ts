@@ -97,9 +97,9 @@ export const HEADER_CONTENT = `
             text-4xl
             font-extrabold
             tracking-tight
-            capitalize
             text-white
             sm:text-5xl
+            capitalize
             lg:text-6xl
           "
         >
@@ -110,17 +110,14 @@ export const HEADER_CONTENT = `
         </p>
       </div>
     </Container>
-    <!-- <div class="relative max-w-7xl mx-auto py-24 sm:py-32">
-
-    </div> -->
   </div>
 </template>
 
 <script>
-import Container from "@/components/Container.vue";
+import Container from "./Container.vue";
 export default {
-  name: "Header",
   components: { Container },
+  name: "Header",
   props: {
     title: String,
     description: String,
