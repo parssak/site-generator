@@ -1,6 +1,6 @@
-import { PlaceholderValue, Section, SectionData, SectionType, sectionDatas } from "../types";
+import { PlaceholderValue, Section, SectionData, SectionType, sectionDatas, IPath } from "../types";
 import * as vscode from 'vscode';
-import { NAV_CONTENT } from "./file-contents";
+import { FOOTER_CONTENT, NAV_CONTENT } from "./file-contents";
 
 export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
@@ -76,13 +76,7 @@ export const generateRouterFileContent = (paths: string[]): string => {
   return routerFileContent;
 };
 
-export const generateNavContent = (paths: string[]): string => {
-
-  interface IPath {
-    label: string;
-    path: string;
-    dropdownItems?: IPath[];
-  }
+export const parsePathArray = (paths: string[]): IPath[] => {
   const pathObjects: Record<string, IPath> = {};
   paths.forEach(path => {
     const lastSlash = path.lastIndexOf('/');
@@ -99,10 +93,10 @@ export const generateNavContent = (paths: string[]): string => {
     }
   });
 
-  console.log('foo');
-  console.log(pathObjects);
-
-  const navRoutes = Object.values(pathObjects).map(route => {
+  return Object.values(pathObjects);
+};
+export const generateNavContent = (paths: string[]): string => {
+  const navRoutes = parsePathArray(paths).map(route => {
     const { label, path, dropdownItems } = route;
     if (dropdownItems) {
       return `
@@ -121,3 +115,14 @@ export const generateNavContent = (paths: string[]): string => {
   return NAV_CONTENT.replace(PlaceholderValue.NAV_ROUTES, `${navRoutes}`);
 };
 
+export const generateFooterContent = (paths: string[]): string => {
+  const navRoutes = parsePathArray(paths).map(route => {
+    const { label, path } = route;
+    return `
+    {
+      path: "/${label === 'home' ? '' : path}",
+      label: "${label}"
+    }`;
+  });
+  return FOOTER_CONTENT.replace(PlaceholderValue.NAV_ROUTES, `${navRoutes}`);
+};

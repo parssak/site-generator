@@ -6,10 +6,8 @@ export default async () => {
   const config = configStr.split(',').map(path => path.trim());
   const result = await window
     .showInformationMessage(
-      "Warning: This will override any current files as needed, continue?",
+      "Override all files as needed?",
       ...["Yes", "No"]
   );
-  if (result === "Yes") {
-    await projectController.setupProject(config);
-  }
+  await projectController.setupProject(config, result === "Yes");
 };

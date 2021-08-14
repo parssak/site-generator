@@ -21,6 +21,7 @@ export enum PlaceholderValue {
   TITLE = 'TITLE_TEXT',
   COUNT = 'COUNT',
   NAV_ROUTES = 'NAV_ROUTES',
+  FOOTER_ROUTES = 'FOOTER_ROUTES',
 }
 
 export interface SectionData {
@@ -43,6 +44,12 @@ export interface Page {
 
 export interface ProjectConfig {
   pages: Page[];
+}
+
+export interface IPath {
+  label: string;
+  path: string;
+  dropdownItems?: IPath[];
 }
 
 export const sectionDatas: SectionData[] = [

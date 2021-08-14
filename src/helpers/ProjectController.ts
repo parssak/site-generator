@@ -1,6 +1,6 @@
-import { generateNavContent } from './index';
+import { generateFooterContent, generateNavContent } from './index';
 import { CONTAINER_CONTENT, HEADER_CONTENT, BASE_FILE_CONTENT, NAV_CONTENT, FOOTER_CONTENT, APP_FILE_CONTENT, NAVITEM_CONTENT } from './file-contents';
-import { FileSystem, FileType, Uri, workspace, WorkspaceFolder } from 'vscode';
+import { FileSystem, FileType, Uri, workspace, WorkspaceFolder, window } from 'vscode';
 import { posix } from 'path';
 import { generateRouterFileContent } from '.';
 import { PlaceholderValue } from '../types';
@@ -9,12 +9,14 @@ export default class ProjectController {
   private rootWorkspace: WorkspaceFolder | undefined;
   private srcDirectoryURI: Uri | undefined;
   private fs: FileSystem = workspace.fs;
+  private overrideAllConflicts = false;
 
   constructor() {
     this.setRootWorkspace();
   }
 
-  public async setupProject(paths: string[]) {
+  public async setupProject(paths: string[], overrideAllConflicts: boolean) {
+    this.overrideAllConflicts = overrideAllConflicts;
     if (!this.rootWorkspace) { return; }
     await this.parseWorkspace(this.rootWorkspace);
     await this.addBaseComponentFiles(paths);
@@ -31,7 +33,6 @@ export default class ProjectController {
   private async parseWorkspace(root: WorkspaceFolder) {
     const basePath = root.uri.path;
     const directory: [string, FileType][] = await this.fs.readDirectory(root.uri);
-    console.log('got directory', directory);
     for (const [name, type] of directory) {
       const path = `${basePath}/${name}`;
       const uri = Uri.parse(path);
@@ -56,8 +57,8 @@ export default class ProjectController {
     // await this.addFile('components', 'Container', CONTAINER_CONTENT);
     // await this.addFile('components', 'Header', HEADER_CONTENT);
     await this.addFile('components/nav', 'Nav', generateNavContent(paths));
+    await this.addFile('components/base', 'Footer', generateFooterContent(paths));
     // await this.addFile('components', 'NavItem', NAVITEM_CONTENT);
-    // await this.addFile('components', 'Footer', FOOTER_CONTENT);
   }
 
   private async addAppFile() {
@@ -69,6 +70,27 @@ export default class ProjectController {
     const localePath = `${folder}/${file}.${fileExtension}`;
     const path = posix.join(this.srcDirectoryURI.path, localePath);
     const uri = this.srcDirectoryURI.with({ path });
-    await this.fs.writeFile(uri, Buffer.from(content, 'utf8'));
+
+    if (this.overrideAllConflicts) {
+      this._writeFile(uri, content);
+    }
+    try {
+      await this.fs.readFile(uri);
+      const result = await window
+        .showInformationMessage(
+          `File: ${localePath} already exists, override it?`,
+          ...["Yes", "No"]
+      );
+      if (result === "Yes") {
+        await this._writeFile(uri, content);
+      }
+    } catch (err) {
+      await this._writeFile(uri, content);
+    }
   }
+
+  // Helper function for addFile
+  private async _writeFile(uri: Uri, content: string) {
+    return await this.fs.writeFile(uri, Buffer.from(content, 'utf8'));
+  };
 }
