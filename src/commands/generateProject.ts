@@ -8,6 +8,8 @@ export default async () => {
     .showInformationMessage(
       "Override all files as needed?",
       ...["Yes", "No"]
-  );
+    );
+  if (!result) { return; }
+  console.log(result, result === 'Yes');
   await projectController.setupProject(config, result === "Yes");
 };

@@ -1,5 +1,5 @@
 import { generateFooterContent, generateNavContent } from './index';
-import { CONTAINER_CONTENT, HEADER_CONTENT, BASE_FILE_CONTENT, NAV_CONTENT, FOOTER_CONTENT, APP_FILE_CONTENT, NAVITEM_CONTENT } from './file-contents';
+import { BASE_FILE_CONTENT, APP_FILE_CONTENT } from './file-contents';
 import { FileSystem, FileType, Uri, workspace, WorkspaceFolder, window } from 'vscode';
 import { posix } from 'path';
 import { generateRouterFileContent } from '.';
@@ -70,7 +70,8 @@ export default class ProjectController {
 
     if (this.overrideAllConflicts) {
       this._writeFile(uri, content);
-    }
+      return;
+    } 
     try {
       await this.fs.readFile(uri);
       const result = await window

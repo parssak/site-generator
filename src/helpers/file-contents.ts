@@ -122,8 +122,7 @@ export default {
 </script>
 `;
 
-export const NAV_CONTENT = `
-<template>
+export const NAV_CONTENT = `<template>
   <Popover class="fixed left-0 w-full top-0 z-20 bg-white shadow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div
@@ -289,8 +288,7 @@ export default {
 
 `;
 
-export const NAVITEM_CONTENT = `
-<template>
+export const NAVITEM_CONTENT = `<template>
   <div>
     <div
       v-if="dropdownItems && dropdownItems.length > 0"

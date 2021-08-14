@@ -124,5 +124,5 @@ export const generateFooterContent = (paths: string[]): string => {
       label: "${label}"
     }`;
   });
-  return FOOTER_CONTENT.replace(PlaceholderValue.NAV_ROUTES, `${navRoutes}`);
+  return FOOTER_CONTENT.replace(PlaceholderValue.FOOTER_ROUTES, `${navRoutes}`);
 };
