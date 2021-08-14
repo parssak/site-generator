@@ -429,7 +429,7 @@ export const FOOTER_CONTENT = `<template>
             <div class="space-y-1">
               <router-link
                 v-for="route in navigation"
-                :key="route.name"
+                :key="route.label"
                 class="
                   block
                   with-underline
@@ -439,7 +439,7 @@ export const FOOTER_CONTENT = `<template>
                   capitalize
                 "
                 :to="route.path"
-                >{{ route.name }}</router-link
+                >{{ route.label }}</router-link
               >
             </div>
           </div>
