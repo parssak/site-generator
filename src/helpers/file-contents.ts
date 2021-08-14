@@ -1,7 +1,6 @@
 import { PlaceholderValue } from "../types";
 
-export const BASE_FILE_CONTENT =`
-<template>
+export const BASE_FILE_CONTENT =`<template>
   <Header title="${PlaceholderValue.TITLE}" />
   <Container>
     <h2>Content</h2>
@@ -13,8 +12,8 @@ export const BASE_FILE_CONTENT =`
 </template>
 
 <script>
-import Container from '@/components/Container';
-import Header from '@/components/Header';
+import Container from '@/components/base/Container';
+import Header from '@/components/base/Header';
 
 export default {
   components: {
@@ -26,16 +25,15 @@ export default {
 </script>
 `;
 
-export const APP_FILE_CONTENT =`
-<template>
+export const APP_FILE_CONTENT =`<template>
   <Nav />
   <router-view />
   <Footer />
 </template>
 
 <script>
-import Footer from "./components/Footer.vue";
-import Nav from "./components/Nav.vue";
+import Footer from "@/components/base/Footer.vue";
+import Nav from "@/components/nav/Nav.vue";
 
 export default {
   components: { Nav, Footer },
@@ -43,8 +41,7 @@ export default {
 </script>
 `;
 
-export const CONTAINER_CONTENT = `
-<template>
+export const CONTAINER_CONTENT = `<template>
   <section
     :class="additionalClasses"
     class="py-4 md:py-8 px-4 sm:px-6 lg:px-8"
@@ -76,8 +73,7 @@ export default {
 
 `;
 
-export const HEADER_CONTENT = `
-<template>
+export const HEADER_CONTENT = `<template>
   <div class="relative">
     <div class="absolute inset-0">
       <img
@@ -114,7 +110,7 @@ export const HEADER_CONTENT = `
 </template>
 
 <script>
-import Container from "./Container.vue";
+import Container from "@/components/base/Container.vue";
 export default {
   components: { Container },
   name: "Header",
@@ -263,7 +259,7 @@ export const NAV_CONTENT = `
 </template>
 
 <script>
-import NavItem from "@/components/NavItem.vue";
+import NavItem from "@/components/nav/NavItem.vue";
 import {
   Popover,
   PopoverButton,
