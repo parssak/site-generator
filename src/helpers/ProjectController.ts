@@ -54,11 +54,8 @@ export default class ProjectController {
   }
 
   private async addBaseComponentFiles(paths: string[]) {
-    // await this.addFile('components', 'Container', CONTAINER_CONTENT);
-    // await this.addFile('components', 'Header', HEADER_CONTENT);
     await this.addFile('components/nav', 'Nav', generateNavContent(paths));
     await this.addFile('components/base', 'Footer', generateFooterContent(paths));
-    // await this.addFile('components', 'NavItem', NAVITEM_CONTENT);
   }
 
   private async addAppFile() {
