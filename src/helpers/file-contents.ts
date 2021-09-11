@@ -1,6 +1,6 @@
 import { PlaceholderValue } from "../types";
 
-export const BASE_FILE_CONTENT =`<template>
+export const BASE_FILE_CONTENT = `<template>
   <Header title="${PlaceholderValue.TITLE}" />
   <Container>
     <h2>Content</h2>
@@ -25,7 +25,7 @@ export default {
 </script>
 `;
 
-export const APP_FILE_CONTENT =`<template>
+export const APP_FILE_CONTENT = `<template>
   <Nav />
   <router-view />
   <Footer />
@@ -418,9 +418,9 @@ export const FOOTER_CONTENT = `<template>
     <h2 id="footer-heading" class="sr-only">Footer</h2>
     <div class="max-w-7xl mx-auto py-12 pb-8 px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-8">
-        <div>
+        <router-link to="/">
           <img class="h-9 w-auto" src="@/assets/logo.svg" alt="Company Name" />
-        </div>
+        </router-link>
         <div class="grid sm:grid-cols-2 gap-8">
           <div>
             <h3 class="mb-3">Navigation</h3>
