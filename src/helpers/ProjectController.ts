@@ -1,5 +1,5 @@
-import { generateDataFileContent, generateFooterContent, generateNavContent } from "./index";
-import { BASE_FILE_CONTENT, APP_FILE_CONTENT } from "./file-contents";
+import { generateDataFileContent } from "./index";
+import { BASE_FILE_CONTENT } from "./file-contents";
 import {
   FileSystem,
   FileType,
@@ -9,7 +9,6 @@ import {
   window,
 } from "vscode";
 import { posix } from "path";
-import { generateRouterFileContent } from ".";
 import { PlaceholderValue } from "../types";
 
 export default class ProjectController {
@@ -28,10 +27,7 @@ export default class ProjectController {
       return;
     }
     await this.parseWorkspace(this.rootWorkspace);
-    // await this.addBaseComponentFiles(paths);
-    // await this.addAppFile();
     await this.createViewFiles(paths);
-    // await this.createRouterFile(paths);
     await this.createDataFile(paths);
   }
 
@@ -73,30 +69,8 @@ export default class ProjectController {
     }
   }
 
-  private async createRouterFile(paths: string[]) {
-    await this.addFile(
-      "router",
-      "index",
-      generateRouterFileContent(paths),
-      "js"
-    );
-  }
-
   private async createDataFile(paths: string[]) {
     await this.addFile("data", "index", generateDataFileContent(paths), "js");
-  }
-
-  private async addBaseComponentFiles(paths: string[]) {
-    await this.addFile("components/nav", "Nav", generateNavContent(paths));
-    await this.addFile(
-      "components/base",
-      "Footer",
-      generateFooterContent(paths)
-    );
-  }
-
-  private async addAppFile() {
-    await this.addFile("", "App", APP_FILE_CONTENT);
   }
 
   private async addFile(
