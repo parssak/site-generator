@@ -7,6 +7,7 @@ export default class SectionController {
   static editor: TextEditor | undefined = window.activeTextEditor;
 
   public static createSection(title: string, type: SectionType, count: number) {
+    console.log('create section', title, type, count);
     const section: Section = this.generateSection(title, type, count);
     this.buildSection(section);
   }

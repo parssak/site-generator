@@ -1,7 +1,6 @@
 import { requestSectionValues } from './../helpers/index';
-import { generateSectionFromData } from '../helpers/index';
 import * as vscode from 'vscode';
-import { buildHeader, buildSection } from '../helpers/builders';
+import { buildHeader } from '../helpers/builders';
 import SectionController from '../helpers/SectionController';
 
 export default async () => {
