@@ -22,6 +22,7 @@ export enum PlaceholderValue {
   COUNT = 'COUNT',
   NAV_ROUTES = 'NAV_ROUTES',
   FOOTER_ROUTES = 'FOOTER_ROUTES',
+  DATA_ROUTES = 'DATA_ROUTES'
 }
 
 export interface SectionData {

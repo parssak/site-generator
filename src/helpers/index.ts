@@ -1,6 +1,6 @@
 import { PlaceholderValue, Section, SectionData, SectionType, sectionDatas, IPath } from "../types";
 import * as vscode from 'vscode';
-import { FOOTER_CONTENT, NAV_CONTENT } from "./file-contents";
+import { DATA_CONTENT, FOOTER_CONTENT, NAV_CONTENT } from "./file-contents";
 
 export const getSectionData = (sectionType: SectionType): SectionData => {
   return sectionDatas.find(data => data.type === sectionType) ?? sectionDatas[0];
@@ -80,6 +80,24 @@ export const generateRouterFileContent = (paths: string[]): string => {
     `;
 
   return routerFileContent;
+};
+
+export const generateDataFileContent = (paths: string[]): string => {
+  const routes = paths.map(
+    (path) =>
+      `
+    {
+      path: "/${path === "home" ? "" : path}",
+      label: "${path.substr(path.lastIndexOf("/") + 1)}",
+      component: () => import("@/views/${path}"),
+    },
+    `
+  );
+  
+  return DATA_CONTENT.replace(
+    PlaceholderValue.DATA_ROUTES,
+    routes.join("\n")
+  );
 };
 
 export const parsePathArray = (paths: string[]): IPath[] => {
