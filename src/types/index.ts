@@ -9,6 +9,7 @@ export enum ComponentType {
   Header = "Header",
   Container = "Container",
   Split = "Split",
+  Banner = "Banner",
 
 }
 
@@ -68,7 +69,7 @@ export const sectionDatas: SectionData[] = [
   },
   {
     type: SectionType.Banner,
-    template: `${ComponentType.Container}>.grid.place-items-center>.text-center>(h2{${PlaceholderValue.TITLE}}+p>lorem10)^^^{}`,
-    components: [ComponentType.Container],
+    template: `${ComponentType.Banner}[title="${PlaceholderValue.TITLE}" description="${lorem}"]>img[src="http://placehold.it/600x400" alt=""]^{}`,
+    components: [ComponentType.Banner],
   },
 ];
